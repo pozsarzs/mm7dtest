@@ -1,0 +1,50 @@
+MM7DTest - Tester program for MM7D air quality measuring device
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. About software
+-----------------
+  It is a tester program for MM7D device. You can retrieve information
+  about software and measured data from device and set limit values to
+  normal operating via HTTP and Modbus protocol.
+
+Requirements:
+
+  Hardware: PC, XT, AT or newer computer,
+            8086 or newer processor,
+            NIC.
+  Software: FreeDOS,
+            installed packet driver for NIC.
+
+2. How to get installer package for my OS?
+------------------------------------------
+a. Visit homepage (see later) to download installer packages:
+
+  DOS:      MM7DTT01.ZIP
+
+b. Download from Github
+
+  > git clone https://github.com/pozsarzs/mm7dtest.git
+
+3. How to set the program?
+-------------------------
+  - If mTCP is not installed on your computer, edit MTCP.CFG file and
+    set MTCPCFG environmental variable to this file. For example:
+    > set mtcpcfg=c:\mm7dtest\mtcp.cfg
+
+4. Contact
+----------
+   Homepage:             <http://www.szerafingomba.hu/softwares/>
+   Author:               Pozsar Zsolt
+   Tax ID:               60407850-1-36
+   Registration num.:    20703695
+
+   E-mail:               <pozsar.zsolt@szerafingomba.hu>
+   Phone:                +36 56/470-272
+   Mobile:               +36 30/249-5030
+   Postal address:       Pozsar Zsolt
+                         Kurazsi Fo ut 1.
+                         HU-5430 Tiszafoldvar
+                         Hungary
+
+--------------------------------------------------------------------------------
+ MM7Dtest * Copyright (C) 2021 Pozsar Zsolt <pozsar.zsolt@szerafingomba.hu>
