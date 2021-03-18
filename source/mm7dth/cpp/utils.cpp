@@ -15,6 +15,9 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <dos.h>
+#include <iostream>
+
+using namespace std;
 
 // clear screen
 void cls()
@@ -23,8 +26,9 @@ void cls()
 }
 
 // pause until keypress
-void pause(int scancode)
+void pause(int scancode, char const *message)
 {
+  cout << message;
   bool repeat = true;
   char ch;
   while (repeat)
@@ -34,6 +38,7 @@ void pause(int scancode)
       if (ch == 0)
       {
         ch = getch();
+        cout << ch;
         if (ch == scancode) repeat = false;
       } else
       {

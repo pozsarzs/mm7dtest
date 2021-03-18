@@ -13,4 +13,4 @@
 // FOR A PARTICULAR PURPOSE.
 
 void cls();
-void pause(int scancode);
+void pause(int scancode, char const *message);

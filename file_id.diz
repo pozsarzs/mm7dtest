@@ -3,8 +3,7 @@ MM7DTest v0.1
 Tester program for MM7D air quality
 measuring device.
 
-(HTTP and Modbus protocol are
-supported.)
+(HTTP version)
 
 Licence: GNU GPL 3.0
 Copyright (C) 2021 Pozsar Zsolt

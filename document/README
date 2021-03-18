@@ -4,8 +4,8 @@ MM7DTest - Tester program for MM7D air quality measuring device
 1. About software
 -----------------
   It is a tester program for MM7D device. You can retrieve information
-  about software and measured data from device and set limit values to
-  normal operating via HTTP and Modbus protocol.
+  about device and measured data and set operation mode, status LEDs in
+  manual mode and limit values to automatic operating via HTTP.
 
 Requirements:
 
@@ -13,13 +13,16 @@ Requirements:
             8086 or newer processor,
             NIC.
   Software: FreeDOS,
-            installed packet driver for NIC.
+            Packet driver for NIC,
+            GNU Wget.
 
 2. How to get installer package for my OS?
 ------------------------------------------
 a. Visit homepage (see later) to download installer packages:
 
-  DOS:      MM7DTT01.ZIP
+  DOS:      MM7DTH01.ZIP
+
+  (This package contents GNU Wget.)
 
 b. Download from Github
 
@@ -27,9 +30,8 @@ b. Download from Github
 
 3. How to set the program?
 -------------------------
-  - If mTCP is not installed on your computer, edit MTCP.CFG file and
-    set MTCPCFG environmental variable to this file. For example:
-    > set mtcpcfg=c:\mm7dtest\mtcp.cfg
+  - If Waterloo TCP/IP is not installed on your computer, edit WATTCP.CFG
+    file.
 
 4. Contact
 ----------
