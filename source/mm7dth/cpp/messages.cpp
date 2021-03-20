@@ -17,17 +17,17 @@ char const *msg(int const index)
 {
   static char const * const message[] =
   {
-    /*  0 */  "³ MM7DTest v0.1 * Tester program for MM7D air quality measuring device        ³\n",
-    /*  1 */  "³ Copyright (C) 2021 Pozsar Zsolt <pozsar.zsolt@szerafingomba.hu>             ³\n",
+    /*  0 */  "| MM7DTest v0.1 * Tester program for MM7D air quality measuring device        |\n",
+    /*  1 */  "| Copyright (C) 2021 Pozsar Zsolt <pozsar.zsolt@szerafingomba.hu>             |\n",
     /*  2 */  "Usage:\n\tmm7dtest.exe IP_address UID\n\n",
     /*  3 */  "Bad IP address!\n",
     /*  4 */  "IP address: ",
-    /*  5 */  "\nMain menu:\n\n",
+    /*  5 */  "\nMenu:\n\n",
     /*  6 */  "\tThe automatic mode is set.\n",
     /*  7 */  "\tThe manual mode is set.\n",
-    /*  8 */  "\tESC:\t\tExit to DOS\n",
+    /*  8 */  "\tq:\t\tExit to DOS\n",
     /*  9 */  "Connection error!\n",
-    /* 10 */  "\nPress <ESC> to back to the main menu\n\n",
+    /* 10 */  "\nPress <ESC> to back to the menu\n\n",
     /* 11 */  "\nTest device via Hypertext Transfer Protocol:\n\n",
     /* 12 */  "Get information about device",
     /* 13 */  "Get operation mode",

@@ -13,38 +13,34 @@
 // FOR A PARTICULAR PURPOSE.
 
 #include <conio.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <dos.h>
-#include <iostream>
 
 using namespace std;
 
 // clear screen
 void cls()
 {
+#ifdef __MSDOS_
   system("cls");
+#else
+  system("clear");
+#endif
 }
 
 // pause until keypress
 void pause(int scancode, char const *message)
 {
-  cout << message;
+  printf("%s\n",message);
   bool repeat = true;
   char ch;
   while (repeat)
   {
     if (kbhit())
     {
-      if (ch == 0)
-      {
-        ch = getch();
-        cout << ch;
-        if (ch == scancode) repeat = false;
-      } else
-      {
-        ch = getch();
-        if (ch == scancode) repeat = false;
-      }
+      ch = getch();
+      if (ch == 0) ch = getch();
+      if (ch == scancode) repeat = false;
     }
   }
 }

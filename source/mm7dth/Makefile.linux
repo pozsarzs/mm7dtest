@@ -1,0 +1,29 @@
+# +----------------------------------------------------------------------------+
+# | MM7DTest v0.1 * Tester program for MM7D air quality measuring device       |
+# | Copyright (C) 2021 Pozsar Zsolt <pozsar.zsolt@szerafingomba.hu>            |
+# | makefile                                                                   |
+# | Makefile for Linux                                                         |
+# +----------------------------------------------------------------------------+
+
+dircpp=cpp
+dirh=h
+compile_options =-bc -d0 -i=$(dirh) -i=$(dircpp)
+objs = ipcheck.o messages.o utils.o t_http.o mm7dth.o
+
+all: mm7dth
+
+clean : .symbolic
+  rm -f mm7dth
+  rm -f *.o
+  rm -f *.map
+
+install : .symbolic
+  cp mm7dth ..\..
+
+.cpp : $(dircpp)
+
+.cpp.o :
+  wpp386 $[* $(compile_options)
+
+mm7dth: $(objs)
+  wlink format elf option map option stack=4096 name $@ file ipcheck.o file messages.o file utils.o file t_http.o file mm7dth.o

@@ -13,8 +13,7 @@
 // FOR A PARTICULAR PURPOSE.
 
 #include <conio.h>
-#include <dos.h>
-#include <iostream>
+#include <iostream.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "messages.h"
@@ -23,38 +22,40 @@
 using namespace std;
 
 // general variables
-char      *outBuffer;
+char      *outBuffer    = (char*) malloc(255);
+char      *ip           = (char*) malloc(15);
+char      *uid          = (char*) malloc(255);
 bool       greenled     = 0;
 bool       yellowled    = 0;
 bool       redled       = 0;
 bool       autoopmode   = 0;
 
-#define    HTTPGETPROG  "wget -qO "
+#define    HTTPGETPROG  "wget -O "
 #define    TEMPFILE     "mm7dtest.tmp"
 
 // write header with menu
 void headerwithmenu(int menu)
 {
   cls();
-  cout << "Ú";  for (int i = 0; i < 77; i++) cout << "Ä"; cout << "¿";
-  cout << "\n";
-  cout << msg(0) << msg(1);
-  cout << "À";  for (int i = 0; i < 77; i++) cout << "Ä"; cout << "Ù"; cout << "\n";
+#ifdef __MSDOS__
+  printf("Ú"); for (int i = 0; i < 77; i++) printf("Ä"); printf("¿\n");
+  printf("%s%s",msg(0),msg(1));
+  printf("À"); for (int i = 0; i < 77; i++) printf("Ä"); printf("Ù\n");
+#else
+  printf("+"); for (int i = 0; i < 77; i++) printf("-"); printf("+\n");
+  printf("%s%s",msg(0),msg(1));
+  printf("+"); for (int i = 0; i < 77; i++) printf("-"); printf("+\n");
+#endif
   if (menu == 0)
   {
-    cout << msg(11);
-    for (int i = 5; i < 20; i++)
-    {
-       if (i<14) cout <<"\tF" << i-4 << ":\t\t" << msg(i+7) <<"\n";
-       if ((i>13) && (i<16)) cout <<"\tShift-F" << i-12 << ":\t" << msg(i+7) <<"\n";
-       if (i>15) cout <<"\tShift-F" << i-9 << ":\t" << msg(i+7) <<"\n";
-    }
-    cout << msg(8);
+    printf(msg(11));
+    for (int i = 5; i < 20; i++) printf("\t%x:\t\t%s\n",i-4,msg(i+7));
+    printf(msg(8));
   } else
   {
     if (menu>17)
-      cout << "\n" << msg(menu) << ":\n\n"; else
-      cout << "\n" << msg(menu+11) << ":\n\n";
+      printf("\n%s:\n\n",msg(menu)); else
+      printf("\n%s:\n\n",msg(menu+11));
   }
 }
 
@@ -83,7 +84,7 @@ int openwebpage(char *url, bool readfile)
 }
 
 // get information about device
-void f01(char *ip, char *id)
+void f01(void)
 {
   int rc;
   char *url = (char*) malloc(255);
@@ -93,162 +94,177 @@ void f01(char *ip, char *id)
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
     while (token != NULL)
     {
-      if (line == 0) cout << msg(45) << token << "\n";
-      if (line == 1) cout << msg(46) << token << "\n";
-      if (line == 2) cout << msg(47) << token << "\n";
+      if (line == 0) printf("%s%s\n",msg(45),token);
+      if (line == 1) printf("%s%s\n",msg(46),token);
+      if (line == 2) printf("%s%s\n",msg(47),token);
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(9);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // get operation mode
-void f02(char *ip, char *id)
+void f02(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(2);
-  sprintf(url,"%s/mode?uid=%s",ip,id);
+  sprintf(url,"%s/mode?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
     while (token != NULL)
     {
       if (line == 0)
-        if (strncmp(token,"1",1) == 0) cout << msg(34);  else  cout << msg(44);
+        if (strncmp(token,"1",1) == 0) printf(msg(34)); else printf(msg(44));
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(0);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // get all measured data
-void f03(char *ip, char *id)
+void f03(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(3);
-  sprintf(url,"%s/get/all?uid=%s",ip,id);
+  sprintf(url,"%s/get/all?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
     while (token != NULL)
     {
-      if (line == 0) cout << msg(48) << token << "%\n";
-      if (line == 1) cout << msg(49) << token << "%\n";
-      if (line == 2) cout << msg(50) << token << " øC\n";
+      if (line == 0) printf("%s%s %% \n",msg(48),token);
+      if (line == 1) printf("%s%s %% \n",msg(49),token);
+#ifdef __MSDOS__
+      if (line == 2) printf("%s%s øC\n",msg(50),token);
+#else
+      if (line == 2) printf("%s%s Â°C\n",msg(50),token);
+#endif
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(9);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // get measured temperature
-void f04(char *ip, char *id)
+void f04(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(4);
-  sprintf(url,"%s/get/temperature?uid=%s",ip,id);
+  sprintf(url,"%s/get/temperature?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
     while (token != NULL)
     {
-      if (line == 0) cout << msg(50) << token << " øC\n";
+#ifdef __MSDOS__
+      if (line == 0) printf("%s%s øC\n",msg(50),token);
+#else
+      if (line == 0) printf("%s%s Â°C\n",msg(50),token);
+#endif
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(0);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
+
 // get measured relative humidity
-void f05(char *ip, char *id)
+void f05(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(5);
-  sprintf(url,"%s/get/humidity?uid=%s",ip,id);
+  sprintf(url,"%s/get/humidity?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
     while (token != NULL)
     {
-      if (line == 0) cout << msg(49) << token << "%\n";
+      if (line == 0) printf("%s%s %% \n",msg(49),token);
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(0);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // get measured relative unwanted gas level
-void f06(char *ip, char *id)
+void f06(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(6);
-  sprintf(url,"%s/get/unwantedgaslevel?uid=%s",ip,id);
+  sprintf(url,"%s/get/unwantedgaslevel?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
     while (token != NULL)
     {
-      if (line == 0) cout << msg(48) << token << "%\n";
+      if (line == 0) printf("%s%s %% \n",msg(48),token);
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(0);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // get status of green LED
-void f07(char *ip, char *id)
+void f07(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(18);
-  sprintf(url,"%s/get/greenled?uid=%s",ip,id);
+  sprintf(url,"%s/get/greenled?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
@@ -256,27 +272,28 @@ void f07(char *ip, char *id)
     {
       if (line == 0)
         if (strncmp(token,"1",1) == 0)
-          cout << msg(27) << msg(30) << msg(31); else
-          cout << msg(27) << msg(30) << msg(32);
+          printf("%s%s%s",msg(27),msg(30),msg(31)); else
+          printf("%s%s%s",msg(27),msg(30),msg(32));
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(0);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // get status of yellow LED
-void f08(char *ip, char *id)
+void f08(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(19);
-  sprintf(url,"%s/get/yellowled?uid=%s",ip,id);
+  sprintf(url,"%s/get/yellowled?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
@@ -284,27 +301,28 @@ void f08(char *ip, char *id)
     {
       if (line == 0)
         if (strncmp(token,"1",1) == 0)
-          cout << msg(28) << msg(30) << msg(31); else
-          cout << msg(28) << msg(30) << msg(32);
+          printf("%s%s%s",msg(28),msg(30),msg(31)); else
+          printf("%s%s%s",msg(28),msg(30),msg(32));
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(0);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // get status of red LED
-void f09(char *ip, char *id)
+void f09(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(20);
-  sprintf(url,"%s/get/redled?uid=%s",ip,id);
+  sprintf(url,"%s/get/redled?uid=%s",ip,uid);
   rc = openwebpage(url,1);
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
@@ -312,34 +330,35 @@ void f09(char *ip, char *id)
     {
       if (line == 0)
         if (strncmp(token,"1",1) == 0)
-          cout << msg(29) << msg(30) << msg(31); else
-          cout << msg(29) << msg(30) << msg(32);
+          printf("%s%s%s",msg(29),msg(30),msg(31)); else
+          printf("%s%s%s",msg(29),msg(30),msg(32));
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(0);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // set operation mode
-void sf02(char *ip, char *id)
+void f10(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(21);
   autoopmode = ! autoopmode;
-  if (autoopmode) cout << msg(7); else cout << msg(6);
+  if (autoopmode) printf(msg(7)); else printf(msg(6));
   if (autoopmode)
-    sprintf(url,"%s/mode/manual?uid=%s",ip,id); else
-    sprintf(url,"%s/mode/auto?uid=%s",ip,id);
+    sprintf(url,"%s/mode/manual?uid=%s",ip,uid); else
+    sprintf(url,"%s/mode/auto?uid=%s",ip,uid);
   rc = openwebpage(url,0);
   free(url);
-  if (rc != 0) cerr << msg(9);
+  if (rc != 0) printf(msg(9));
   pause(27,msg(10));
 }
 
 // set limit values and get all measured data
-void sf03(char *ip, char *id)
+void f11(void)
 {
   int rc;
   int humidity_min, humidifier_on, humidifier_off, humidity_max;
@@ -347,28 +366,27 @@ void sf03(char *ip, char *id)
   int gasconcentrate_max;
   char *url = (char*) malloc(255);
   headerwithmenu(22);
-  cout << msg(35);
-  cin >> humidity_min;
-  cout << msg(36);
-  cin >> humidifier_on;
-  cout << msg(37);
-  cin >> humidifier_off;
-  cout << msg(38);
-  cin >> humidity_max;
-  cout << msg(39);
-  cin >> temperature_min;
-  cout << msg(40);
-  cin >> heater_on;
-  cout << msg(41);
-  cin >> heater_off;
-  cout << msg(42);
-  cin >> temperature_max;
-  cout << msg(43);
-  cin >> gasconcentrate_max;
-  delay(500);
+  printf(msg(35));
+  scanf("%d",&humidity_min);
+  printf(msg(36));
+  scanf("%d",&humidifier_on);
+  printf(msg(37));
+  scanf("%d",&humidifier_off);
+  printf(msg(38));
+  scanf("%d",&humidity_max);
+  printf(msg(39));
+  scanf("%d",&temperature_min);
+  printf(msg(40));
+  scanf("%d",&heater_on);
+  printf(msg(41));
+  scanf("%d",&heater_off);
+  printf(msg(42));
+  scanf("%d",&temperature_max);
+  printf(msg(43));
+  scanf("%d",&gasconcentrate_max);
   headerwithmenu(22);
   sprintf(url,"%s/operation?uid=%s&h1=%d&h2=%d&h3=%d&h4=%d&t1=%d&t2=%d&t3=%d&t4=%d&g=%d",
-              ip, id,
+              ip, uid,
               humidity_min, humidifier_on, humidifier_off, humidity_max,
               temperature_min, heater_on, heater_off, temperature_max,
               gasconcentrate_max);
@@ -376,96 +394,103 @@ void sf03(char *ip, char *id)
   free(url);
   if (rc == 0)
   {
-    char *input;
+    char *input = (char*) malloc(255);;
     strcpy(input,outBuffer);
     char *token = strtok(input,"\n");
     int line = 0;
     while (token != NULL)
     {
-      if (line == 0) cout << msg(48) << token << "%\n";
-      if (line == 1) cout << msg(49) << token << "%\n";
-      if (line == 2) cout << msg(50) << token << " øC\n";
+      if (line == 0) printf("%s%s %% \n",msg(48),token);
+      if (line == 1) printf("%s%s %% \n",msg(49),token);
+#ifdef __MSDOS__
+      if (line == 2) printf("%s%s øC\n",msg(50),token);
+#else
+      if (line == 2) printf("%s%s Â°C\n",msg(50),token);
+#endif
       token = strtok(NULL,"\n");
       line++;
     }
-  } else cerr << msg(9);
+    free(input);
+  } else printf(msg(9));
   pause(27,msg(10));
 }
 
 // on/off green status LED
-void sf07(char *ip, char *id)
+void f12(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(23);
   greenled = ! greenled;
   if (greenled)
-    cout << msg(27) << msg(30) << msg(32); else
-    cout << msg(27) << msg(30) << msg(31);
+    printf("%s%s%s",msg(27),msg(30),msg(32)); else
+    printf("%s%s%s",msg(27),msg(30),msg(31));
   if (greenled)
-    sprintf(url,"%s/set/greenled/off?uid=%s",ip,id); else
-    sprintf(url,"%s/set/greenled/on?uid=%s",ip,id);
+    sprintf(url,"%s/set/greenled/off?uid=%s",ip,uid); else
+    sprintf(url,"%s/set/greenled/on?uid=%s",ip,uid);
   rc = openwebpage(url,0);
   free(url);
-  if (rc != 0) cerr << msg(9);
+  if (rc != 0) printf(msg(9));
   pause(27,msg(10));
 }
 
 // on/off yellow status LED
-void sf08(char *ip, char *id)
+void f13(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(24);
   yellowled = ! yellowled;
   if (yellowled)
-    cout << msg(28) << msg(30) << msg(32); else
-    cout << msg(28) << msg(30) << msg(31);
+    printf("%s%s%s",msg(28),msg(30),msg(32)); else
+    printf("%s%s%s",msg(28),msg(30),msg(31));
   if (yellowled)
-    sprintf(url,"%s/set/yellowled/off?uid=%s",ip,id); else
-    sprintf(url,"%s/set/yellowled/on?uid=%s",ip,id);
+    sprintf(url,"%s/set/yellowled/off?uid=%s",ip,uid); else
+    sprintf(url,"%s/set/yellowled/on?uid=%s",ip,uid);
   rc = openwebpage(url,0);
   free(url);
-  if (rc != 0) cerr << msg(9);
+  if (rc != 0) printf(msg(9));
   pause(27,msg(10));
 }
 
 // on/off red status LED
-void sf09(char *ip, char *id)
+void f14(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(25);
   redled = ! redled;
   if (redled)
-    cout << msg(29) << msg(30) << msg(32); else
-    cout << msg(29) << msg(30) << msg(31);
+    printf("%s%s%s",msg(29),msg(30),msg(32)); else
+    printf("%s%s%s",msg(29),msg(30),msg(31));
   if (redled)
-    sprintf(url,"%s/set/redled/off?uid=%s",ip,id); else
-    sprintf(url,"%s/set/redled/on?uid=%s",ip,id);
+    sprintf(url,"%s/set/redled/off?uid=%s",ip,uid); else
+    sprintf(url,"%s/set/redled/on?uid=%s",ip,uid);
   rc = openwebpage(url,0);
   free(url);
-  if (rc != 0) cerr << msg(9);
+  if (rc != 0) printf(msg(9));
   pause(27,msg(10));
 }
 
 // off all status LEDs
-void sf10(char *ip, char *id)
+void f15(void)
 {
   int rc;
   char *url = (char*) malloc(255);
   headerwithmenu(26);
-  cout << msg(33);
-  sprintf(url,"%s/set/all/off?uid=%s",ip,id);
+  printf(msg(33));
+  sprintf(url,"%s/set/all/off?uid=%s",ip,uid);
   rc = openwebpage(url,0);
   free(url);
-  if (rc != 0) cerr << msg(9);
+  if (rc != 0) printf(msg(9));
   pause(27,msg(10));
 }
 
 // main function
-void httptest(char *ip, char *id)
+void httptest(char *iip, char *iuid)
 {
+  strcpy(ip,iip);
+  strcpy(uid,iuid);
   // menu
   headerwithmenu(0);
   bool repeat = true;
@@ -474,30 +499,26 @@ void httptest(char *ip, char *id)
   {
     if (kbhit())
     {
-      ch = getch();
-      if (ch == 0)
+      ch = getchar();
+      switch (ch)
       {
-        ch = getch();
-        switch (ch)
-        {
-          case 59:  f01(ip,id); headerwithmenu(0); break;
-          case 60:  f02(ip,id); headerwithmenu(0); break;
-          case 61:  f03(ip,id); headerwithmenu(0); break;
-          case 62:  f04(ip,id); headerwithmenu(0); break;
-          case 63:  f05(ip,id); headerwithmenu(0); break;
-          case 64:  f06(ip,id); headerwithmenu(0); break;
-          case 65:  f07(ip,id); headerwithmenu(0); break;
-          case 66:  f08(ip,id); headerwithmenu(0); break;
-          case 67:  f09(ip,id); headerwithmenu(0); break;
-          case 85: sf02(ip,id); headerwithmenu(0); break;
-          case 86: sf03(ip,id); headerwithmenu(0); break;
-          case 90: sf07(ip,id); headerwithmenu(0); break;
-          case 91: sf08(ip,id); headerwithmenu(0); break;
-          case 92: sf09(ip,id); headerwithmenu(0); break;
-          case 93: sf10(ip,id); headerwithmenu(0); break;
-        }
+        case '1': f01(); headerwithmenu(0); break;
+        case '2': f02(); headerwithmenu(0); break;
+        case '3': f03(); headerwithmenu(0); break;
+        case '4': f04(); headerwithmenu(0); break;
+        case '5': f05(); headerwithmenu(0); break;
+        case '6': f06(); headerwithmenu(0); break;
+        case '7': f07(); headerwithmenu(0); break;
+        case '8': f08(); headerwithmenu(0); break;
+        case '9': f09(); headerwithmenu(0); break;
+        case 'a': f10(); headerwithmenu(0); break;
+        case 'b': f11(); headerwithmenu(0); break;
+        case 'c': f12(); headerwithmenu(0); break;
+        case 'd': f13(); headerwithmenu(0); break;
+        case 'e': f14(); headerwithmenu(0); break;
+        case 'f': f15(); headerwithmenu(0); break;
       }
-      if (ch == 27) repeat = false;
+      if (ch == 'q') repeat = false;
     }
   }
 }

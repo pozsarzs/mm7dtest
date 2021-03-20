@@ -9,20 +9,29 @@ MM7DTest - Tester program for MM7D air quality measuring device
 
 Requirements:
 
-  Hardware: PC, XT, AT or newer computer,
-            8086 or newer processor,
-            NIC.
-  Software: FreeDOS,
-            Packet driver for NIC,
-            GNU Wget.
+  DOS version:
+    Hardware:    PC, XT, AT or newer computer,
+                 8086 or newer processor,
+                 NIC.
+    Software:    FreeDOS,
+                 Packet driver for NIC,
+                 GNU Wget.
+
+  Linux version:
+    Hardware:    AT or newer computer,
+                 80386 or newer processor,
+                 NIC.
+    Software:    GNU/Linux OS,
+                 GNU Wget.
 
 2. How to get installer package for my OS?
 ------------------------------------------
 a. Visit homepage (see later) to download installer packages:
 
-  DOS:      MM7DTH01.ZIP
+  DOS:           MM7DTH01.ZIP
+  Linux:         mm7dtest-0.1-i386.tar.gz
 
-  (This package contents GNU Wget.)
+  (This packages contents GNU Wget.)
 
 b. Download from Github
 
@@ -30,8 +39,8 @@ b. Download from Github
 
 3. How to set the program?
 -------------------------
-  - If Waterloo TCP/IP is not installed on your computer, edit WATTCP.CFG
-    file.
+  If Waterloo TCP/IP is not installed on your computer (on DOS only), edit WATTCP.CFG
+  file.
 
 4. Contact
 ----------

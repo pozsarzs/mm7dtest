@@ -12,4 +12,4 @@
 // ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 // FOR A PARTICULAR PURPOSE.
 
-void httptest(char *ip, char *id);
+void httptest(char *iip, char *iuid);

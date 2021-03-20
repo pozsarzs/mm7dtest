@@ -16,9 +16,6 @@
 // 0: normal exit
 // 1: bad IP address in command line parameter
 
-#include <conio.h>
-#include <iostream>
-#include <stdlib.h>
 #include <stdio.h>
 #include <string>
 #include "ipcheck.h"
@@ -42,24 +39,24 @@ int main(int argc, char *argv[])
       // usage screen
       if ((std::string(argv[1]) == "-h") || (std::string(argv[1]) == "--help"))
       {
-        cout << msg(2);
+        printf(msg(2));
         return (0);
       } else
       {
       // name and version
         if ((std::string(argv[1]) == "-v") || (std::string(argv[1]) == "--version"))
         {
-          cout << PRGNAME << " " << PRGVER << "\n";
+          printf("%s %s\n",PRGNAME,PRGVER);
           return (0);
         } else
         {
-          cout << msg(2);
+          printf(msg(2));
           return (0);
         }
       }
     } else
     {
-      cout << msg(2);
+      printf(msg(2));
       return (0);
     }
   } else
@@ -69,7 +66,7 @@ int main(int argc, char *argv[])
     strcpy(ipaddress,argv[1]);
     if (validate_ip(ipaddress) != 1)
     {
-      cerr << msg(3);
+      printf(msg(3));
       rc = 1;
     } else
     {
