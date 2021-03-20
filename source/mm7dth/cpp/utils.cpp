@@ -21,7 +21,7 @@ using namespace std;
 // clear screen
 void cls()
 {
-#ifdef __MSDOS_
+#ifdef __DOS__
   system("cls");
 #else
   system("clear");

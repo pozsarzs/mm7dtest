@@ -5,11 +5,8 @@ GitHub: <https://github.com/pozsarzs/mm7dtest>
 
 **Software**
 
- - architecture:       i86
- - operation system:   DOS
-
  - architecture:       i386
- - operation system:   GNU/Linux
+ - operation system:   DOS, GNU/Linux
 
  - version:            v0.1
  - language:           en

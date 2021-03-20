@@ -30,20 +30,22 @@ bool       yellowled    = 0;
 bool       redled       = 0;
 bool       autoopmode   = 0;
 
-#define    HTTPGETPROG  "wget -O "
+#define    HTTPGETPROG  "wget -qO "
 #define    TEMPFILE     "mm7dtest.tmp"
 
 // write header with menu
 void headerwithmenu(int menu)
 {
   cls();
-#ifdef __MSDOS__
+#ifdef __DOS__
   printf("Ú"); for (int i = 0; i < 77; i++) printf("Ä"); printf("¿\n");
-  printf("%s%s",msg(0),msg(1));
+  printf("³ %s³\n",msg(0));
+  printf("³ %s³\n",msg(1));
   printf("À"); for (int i = 0; i < 77; i++) printf("Ä"); printf("Ù\n");
 #else
   printf("+"); for (int i = 0; i < 77; i++) printf("-"); printf("+\n");
-  printf("%s%s",msg(0),msg(1));
+  printf("| %s|\n",msg(0));
+  printf("| %s|\n",msg(1));
   printf("+"); for (int i = 0; i < 77; i++) printf("-"); printf("+\n");
 #endif
   if (menu == 0)
@@ -157,7 +159,7 @@ void f03(void)
     {
       if (line == 0) printf("%s%s %% \n",msg(48),token);
       if (line == 1) printf("%s%s %% \n",msg(49),token);
-#ifdef __MSDOS__
+#ifdef __DOS__
       if (line == 2) printf("%s%s øC\n",msg(50),token);
 #else
       if (line == 2) printf("%s%s Â°C\n",msg(50),token);
@@ -187,7 +189,7 @@ void f04(void)
     int line = 0;
     while (token != NULL)
     {
-#ifdef __MSDOS__
+#ifdef __DOS__
       if (line == 0) printf("%s%s øC\n",msg(50),token);
 #else
       if (line == 0) printf("%s%s Â°C\n",msg(50),token);
@@ -402,7 +404,7 @@ void f11(void)
     {
       if (line == 0) printf("%s%s %% \n",msg(48),token);
       if (line == 1) printf("%s%s %% \n",msg(49),token);
-#ifdef __MSDOS__
+#ifdef __DOS__
       if (line == 2) printf("%s%s øC\n",msg(50),token);
 #else
       if (line == 2) printf("%s%s Â°C\n",msg(50),token);
@@ -499,7 +501,7 @@ void httptest(char *iip, char *iuid)
   {
     if (kbhit())
     {
-      ch = getchar();
+      ch = getch();
       switch (ch)
       {
         case '1': f01(); headerwithmenu(0); break;

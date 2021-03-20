@@ -5,7 +5,7 @@
 # | Makefile for DOS                                                           |
 # +----------------------------------------------------------------------------+
 
-processor=-0
+processor=-3
 memory_model=-ml
 dircpp=cpp
 dirh=h
