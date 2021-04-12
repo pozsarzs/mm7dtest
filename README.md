@@ -11,4 +11,4 @@ GitHub: <https://github.com/pozsarzs/mm7dtest>
  - version:            v0.1
  - language:           en
  - licence:            GPL v3.0
- - user interface:     CUI
+ - user interface:     TUI
